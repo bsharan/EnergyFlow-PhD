@@ -9,24 +9,18 @@ Based on validated research: 2025 models consume 7x more energy (105 J/s vs 15 J
 
 import streamlit as st
 import json
+import nltk
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime
 import numpy as np
 
-# NLTK import with Streamlit Cloud compatibility
+# Download required NLTK data
 try:
-    import nltk
-    try:
-        nltk.data.find('tokenizers/punkt')
-    except LookupError:
-        nltk.download('punkt', quiet=True)
-        nltk.download('punkt_tab', quiet=True)
-except Exception as e:
-    # Fallback: use simple split if NLTK fails
-    st.warning("NLTK not available, using simple tokenization")
-    nltk = None
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', quiet=True)
 
 # Page configuration
 st.set_page_config(
@@ -76,11 +70,8 @@ class V3EnergyPredictor:
         if not text.strip():
             return 0
         try:
-            if nltk:
-                tokens = nltk.word_tokenize(text)
-                return len(tokens)
-            else:
-                return len(text.split())
+            tokens = nltk.word_tokenize(text)
+            return len(tokens)
         except:
             return len(text.split())
     
