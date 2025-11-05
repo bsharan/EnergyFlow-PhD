@@ -9,18 +9,13 @@ Based on validated research: 2025 models consume 7x more energy (105 J/s vs 15 J
 
 import streamlit as st
 import json
-import nltk
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime
 import numpy as np
 
-# Download required NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt', quiet=True)
+# No NLTK needed - using simple tokenization
 
 # Page configuration
 st.set_page_config(
@@ -66,14 +61,11 @@ class V3EnergyPredictor:
         }
     
     def count_tokens(self, text):
-        """Count tokens in user input."""
+        """Count tokens in user input using simple word split."""
         if not text.strip():
             return 0
-        try:
-            tokens = nltk.word_tokenize(text)
-            return len(tokens)
-        except:
-            return len(text.split())
+        # Simple tokenization by splitting on spaces
+        return len(text.split())
     
     def calculate_latency(self, model_name, tokens, batch_size, demand_level):
         """Calculate predicted latency based on model and configuration."""
